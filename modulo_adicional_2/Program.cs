@@ -10,7 +10,7 @@ namespace Modulo_adicional_2
     {
         public static void Main()
         {
-            float numero;
+            int numero;
             char operando;
             char caracter;
             int Z = 90;
@@ -23,22 +23,31 @@ namespace Modulo_adicional_2
 
             Pila.Clear();
             Cola.Clear();
-            foreach (char c in operacion)
+            for (int i = 0; i < operacion.Length; i++)
             {
-                if(c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '(' || c == ')')
+                char c = operacion[i];
+
+                if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '(' || c == ')')
                 {
                     operando = c;
                     Cola.Enqueue(operando);
-                }else if(char.IsLetter(c))
+                }
+                else if (char.IsLetter(c))
                 {
                     caracter = c;
-                    int valorAscii = (int)caracter;
-                    valorAscii -= Z;
-                    Pila.Push(valorAscii);
-                }else if(char.IsDigit(c))
+                    Pila.Push(caracter);
+                }
+                else if (char.IsDigit(c))
                 {
                     numero = c - '0'; //Restamos el valor ASCII de lo que haya en c y el valor ASCII de 0. El resultado nos dará el número contenido en c en entero
-                    if(numero < 10)
+
+                    if (i + 1 < operacion.Length && char.IsDigit(operacion[i + 1]))
+                    {
+                        i++;
+                        numero = numero * 10 + (operacion[i] - '0');
+                    }
+                    
+                    if(numero >= 0 && numero < 10)
                     {
                         Pila.Push(numero);
                     }else
@@ -46,9 +55,10 @@ namespace Modulo_adicional_2
                         Console.WriteLine($"El número {numero} es mayor a 9");
                         break;
                     }
-                }else
+                }
+                else
                 {
-                    Console.WriteLine($"El valor {c} no es válido para realizar la operación");
+                    Console.WriteLine($"El valor '{c}' no es válido para realizar la operación");
                     break;
                 }
             }
