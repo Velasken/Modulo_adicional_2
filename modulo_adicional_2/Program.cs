@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Text;
 using System.Reflection.PortableExecutable;
+using System.Globalization;
 
 namespace Modulo_adicional_2
 {
@@ -30,12 +31,12 @@ namespace Modulo_adicional_2
                 if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '(' || c == ')')
                 {
                     operando = c;
-                    Cola.Enqueue(operando);
+                    Pila.Push(operando);
                 }
                 else if (char.IsLetter(c))
                 {
                     caracter = c;
-                    Pila.Push(caracter);
+                    Cola.Enqueue(caracter);
                 }
                 else if (char.IsDigit(c))
                 {
@@ -49,7 +50,7 @@ namespace Modulo_adicional_2
                     
                     if(numero >= 0 && numero < 10)
                     {
-                        Pila.Push(numero);
+                        Cola.Enqueue(numero);
                     }else
                     {
                         Console.WriteLine($"El número {numero} es mayor a 9");
