@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\modulo_adicional_2.csproj": {}
+    "C:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\modulo_adicional_2.csproj": {}
   },
   "projects": {
-    "c:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\modulo_adicional_2.csproj": {
+    "C:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\modulo_adicional_2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\modulo_adicional_2.csproj",
+        "projectUniqueName": "C:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\modulo_adicional_2.csproj",
         "projectName": "modulo_adicional_2",
-        "projectPath": "c:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\modulo_adicional_2.csproj",
+        "projectPath": "C:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\modulo_adicional_2.csproj",
         "packagesPath": "C:\\Users\\svc_admin\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\obj\\",
+        "outputPath": "C:\\Users\\svc_admin\\OneDrive - UFV\\Year2\\EDA\\Practicas_EDA\\Modulo_adicional_2\\Modulo_adicional_2\\modulo_adicional_2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\svc_admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
