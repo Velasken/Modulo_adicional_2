@@ -37,11 +37,11 @@ namespace Modulo_adicional_2
 
                     if (operador == '(')
                     {
-                        p1 = true;
+                        p1 = true; //Indicamos que hemos encontrado el inicio del parentesis
                     }
                     else if (operador == ')')
                     {
-                        p2 = true;
+                        p2 = true; //Indicamos que hemos encontrado el final del parentesis
                     }
                     else
                     {
@@ -85,20 +85,20 @@ namespace Modulo_adicional_2
                                     break;
                             }
 
-                            if (prioridad1 >= prioridad2)
+                            if (prioridad1 >= prioridad2) //Si el orden de prioridad del que entra es mayor o igual al que entro anteriormente
                             {
                                 Pila.Push(operador); //Introducimos el operador en la pila
 
                             }
-                            else
+                            else //En caso contrario
                             {
-                                while (Pila.Count != 0 && prioridad1 < prioridad2)
+                                while (Pila.Count != 0 && prioridad1 < prioridad2) //Mientras haya operadores en la pila y la prioridad del elemento que entra es menor al elemento añadido anteriormente
                                 {
-                                    Cola.Enqueue(Pila.Pop());
+                                    Cola.Enqueue(Pila.Pop()); //Desapilamos el operador con el que estamos comparado y lo metemos a la cola
 
-                                    if (Pila.Count != 0)
+                                    if (Pila.Count != 0) //comprobamos si aún hay elementos en la pila
                                     {
-                                        switch (Pila.Peek()) //Comprobamos la prioridad del del último operador introducido
+                                        switch (Pila.Peek()) //Comprobamos la prioridad del siguiente operador
                                         {
                                             case '+':
                                                 prioridad2 = 1;
@@ -118,7 +118,7 @@ namespace Modulo_adicional_2
                                         }
                                     }
                                 }
-                                Pila.Push(operador); //Introducimos el operador en la pila
+                                Pila.Push(operador); //Introducimos el operador en la pila si no quedan más operadores en la pila
                             }
 
                         }
