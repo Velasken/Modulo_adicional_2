@@ -21,7 +21,7 @@ namespace Modulo_adicional_2
             int Z = 90; //variable que contiene el valor ASCII de Z
             char[] operacion; //Array de caracteres donde se guardara la operación introducida
             Queue Cola = new Queue(); //Crear Cola
-            Queue ColaAux = new Queue();
+            Queue ColaAux = new Queue(); //Cola Auxiliar
             Stack Pila = new Stack(); //Crear pila
 
             Console.Write("Introduzca una operación: "); //Pedir al usuario que introduzca una operación
@@ -29,7 +29,7 @@ namespace Modulo_adicional_2
 
             Pila.Clear(); //Limpiamos la pila 
             Cola.Clear(); //Limpiamos la cola
-            ColaAux.Clear();
+            ColaAux.Clear(); //Limpiamos la cola auxiliar
             for (int i = 0; i < operacion.Length; i++) //Bucle for para acceder a cada caracter del array
             {
                 char c = operacion[i]; //Guardamos el caracter actual en c
@@ -90,7 +90,7 @@ namespace Modulo_adicional_2
 
                             if (prioridad1 >= prioridad2) //Si el orden de prioridad del que entra es mayor o igual al que entro anteriormente
                             {
-                                Pila.Push(operador); //Introducimos el operador en la pila
+                                Pila.Push(operador.ToString()); //Introducimos el operador en la pila
 
                             }
                             else //En caso contrario
@@ -121,13 +121,13 @@ namespace Modulo_adicional_2
                                         }
                                     }
                                 }
-                                Pila.Push(operador); //Introducimos el operador en la pila si no quedan más operadores en la pila
+                                Pila.Push(operador.ToString()); //Introducimos el operador en la pila si no quedan más operadores en la pila
                             }
 
                         }
                         else//Si la pila no tiene ningún valor, hacemos esto
                         {
-                            Pila.Push(operador); //Introducimos el operador
+                            Pila.Push(operador.ToString()); //Introducimos el operador
                         }
                     }
                     if (p1 && p2) //Comprobamos si existe '(' y ')'
@@ -182,32 +182,32 @@ namespace Modulo_adicional_2
                     }
                 }
 
-                object[] col = Cola.ToArray();
+                object[] col = Cola.ToArray(); //Convertimos la Cola principal en un array
                 
                 for(int i = 0; i < col.Length; i++)
                 {
-                    ColaAux.Enqueue(col[i]);
+                    ColaAux.Enqueue(col[i]); //Para evitar perder datos en proceso del cálculo, pasamos los valores de la cola principal a la cola auxiliar
                 }
 
-                Pila.Clear();
+                Pila.Clear(); //Limpiamos la pila por si acaso
 
                 while (Cola.Count > 0)
                 {
-                    string c = (string)Cola.Dequeue(); // sacar el primer elemento
+                    string c = (string)Cola.Dequeue(); // Sacar el primer elemento
 
-                    if (char.IsLetter(c[0])) // letra
+                    if (char.IsLetter(c[0])) //  Comprobar si es una letra
                     {
-                        Pila.Push((int)c[0] - (int)Z); // valor ASCII - 'Z'
+                        Pila.Push((int)c[0] - (int)Z); // Valor de la letra en ASCII - Z
                     }
-                    else if (char.IsDigit(c[0])) // número
+                    else if (char.IsDigit(c[0])) // Comprobar si es un número
                     {
                         Pila.Push(int.Parse(c));
                     }
-                    else // operador
+                    else // Si es un operador
                     {
                         int b = (int)Pila.Pop();
                         int a = (int)Pila.Pop();
-                        switch (c)
+                        switch (c) //Comprobamos que operador es c para que lleve acabo una operación concreta
                         {
                             case "+": 
                                 Pila.Push(a + b); 
@@ -228,16 +228,15 @@ namespace Modulo_adicional_2
                     }
                 }
 
-                // Guardar el resultado en una variable int
-                resultado = (int)Pila.Pop();
+                resultado = (int)Pila.Pop(); // Guardar el resultado en la variable resultado
 
                 Console.Write("SUFIJO: "); //Imprimimos la operación en formato Sufijo
-                while (ColaAux.Count != 0) //Mientras haya elementos en la cola
+                while (ColaAux.Count != 0) //Mientras haya elementos en la cola auxiliar
                 {
-                    Console.Write($"{ColaAux.Dequeue()} "); //Imprimimos el valor
+                    Console.Write($"{ColaAux.Dequeue()} "); //Imprimimos los valores
                 }
                 Console.Write("\n");
-                Console.Write($"resultado = {resultado}");
+                Console.Write($"Resultado = {resultado}"); //Imprimimos el resultado
             }
 
         }
