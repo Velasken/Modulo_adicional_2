@@ -12,6 +12,7 @@ namespace Modulo_adicional_2
             int numero; //variable para guadar los números
             char operador; //variable para guardar los operadores (+,-,/,*,^)
             char caracter; //variable para guardar las letras
+            int resultado = 0; //Variable para almacenar el resultado
             int prioridad1 = 0; //variable para determinar el orden de prioridad del opererador que se va a introducir a pila
             int prioridad2 = 0; //variable para saber el orden de prioridad del último operador introducuido
             bool p1 = false; //variable para comprobar si se ha enconrrado (
@@ -20,6 +21,7 @@ namespace Modulo_adicional_2
             int Z = 90; //variable que contiene el valor ASCII de Z
             char[] operacion; //Array de caracteres donde se guardara la operación introducida
             Queue Cola = new Queue(); //Crear Cola
+            Queue ColaAux = new Queue();
             Stack Pila = new Stack(); //Crear pila
 
             Console.Write("Introduzca una operación: "); //Pedir al usuario que introduzca una operación
@@ -27,6 +29,7 @@ namespace Modulo_adicional_2
 
             Pila.Clear(); //Limpiamos la pila 
             Cola.Clear(); //Limpiamos la cola
+            ColaAux.Clear();
             for (int i = 0; i < operacion.Length; i++) //Bucle for para acceder a cada caracter del array
             {
                 char c = operacion[i]; //Guardamos el caracter actual en c
@@ -94,7 +97,7 @@ namespace Modulo_adicional_2
                             {
                                 while (Pila.Count != 0 && prioridad1 < prioridad2) //Mientras haya operadores en la pila y la prioridad del elemento que entra es menor al elemento añadido anteriormente
                                 {
-                                    Cola.Enqueue(Pila.Pop()); //Desapilamos el operador con el que estamos comparado y lo metemos a la cola
+                                    Cola.Enqueue(Pila.Pop().ToString()); //Desapilamos el operador con el que estamos comparado y lo metemos a la cola
 
                                     if (Pila.Count != 0) //comprobamos si aún hay elementos en la pila
                                     {
@@ -131,7 +134,7 @@ namespace Modulo_adicional_2
                     {
                         while (Pila.Count != 0) //Mientras halla operadores en la pila
                         {
-                            Cola.Enqueue(Pila.Pop()); //Desapilamos todos los valores que hay en la pila y los pasamos a la cola
+                            Cola.Enqueue(Pila.Pop().ToString()); //Desapilamos todos los valores que hay en la pila y los pasamos a la cola
                         }
 
                         p1 = p2 = false; //Reseteamos los valores de p1 y p2
@@ -140,7 +143,7 @@ namespace Modulo_adicional_2
                 else if (char.IsLetter(c)) //Comprobamos si el caracter es una letra
                 {
                     caracter = c; //Guardamos c en caracter
-                    Cola.Enqueue(caracter); //Encolamos la letra
+                    Cola.Enqueue(caracter.ToString()); //Encolamos la letra
                 }
                 else if (char.IsDigit(c)) //Comprobamos si el caracter es un número
                 {
@@ -154,7 +157,7 @@ namespace Modulo_adicional_2
 
                     if (numero >= 0 && numero < 10) //Comrpobamos que el número se menor a 10 y mayor que -1
                     {
-                        Cola.Enqueue(numero); //Si se cumple, se encola el número
+                        Cola.Enqueue(numero.ToString()); //Si se cumple, se encola el número
                     }
                     else //Si no se cumple
                     {
@@ -171,19 +174,70 @@ namespace Modulo_adicional_2
 
             if (imp) //imprimimos el resultado en sufijo solo si no hay nada ilegal en la operación dada
             {
-                if (Pila.Count != 0)
+                if (Pila.Count != 0) //Comprobar si aún hay valores en la pila
                 {
-                    while (Pila.Count != 0) //Comprobar si aún hay valores en la pila
+                    while (Pila.Count != 0)
                     {
                         Cola.Enqueue(Pila.Pop()); //Sacar los valores que aun hay en la pila y meterlos en la cola
                     }
                 }
 
-                Console.Write("SUFIJO: "); //Imprimimos la operación en formato Sufijo
-                while (Cola.Count != 0) //Mientras haya elementos en la cola
+                object[] col = Cola.ToArray();
+                
+                for(int i = 0; i < col.Length; i++)
                 {
-                    Console.Write($"{Cola.Dequeue()} "); //Imprimimos el valor
+                    ColaAux.Enqueue(col[i]);
                 }
+
+                Pila.Clear();
+
+                while (Cola.Count > 0)
+                {
+                    string c = (string)Cola.Dequeue(); // sacar el primer elemento
+
+                    if (char.IsLetter(c[0])) // letra
+                    {
+                        Pila.Push((int)c[0] - (int)Z); // valor ASCII - 'Z'
+                    }
+                    else if (char.IsDigit(c[0])) // número
+                    {
+                        Pila.Push(int.Parse(c));
+                    }
+                    else // operador
+                    {
+                        int b = (int)Pila.Pop();
+                        int a = (int)Pila.Pop();
+                        switch (c)
+                        {
+                            case "+": 
+                                Pila.Push(a + b); 
+                                break;
+                            case "-": 
+                                Pila.Push(a - b); 
+                                break;
+                            case "*": 
+                                Pila.Push(a * b); 
+                                break;
+                            case "/": 
+                                Pila.Push(a / b); 
+                                break;      
+                            case "^": 
+                                Pila.Push((int)Math.Pow(a, b)); 
+                                break;
+                        }
+                    }
+                }
+
+                // Guardar el resultado en una variable int
+                resultado = (int)Pila.Pop();
+
+                Console.Write("SUFIJO: "); //Imprimimos la operación en formato Sufijo
+                while (ColaAux.Count != 0) //Mientras haya elementos en la cola
+                {
+                    Console.Write($"{ColaAux.Dequeue()} "); //Imprimimos el valor
+                }
+                Console.Write("\n");
+                Console.Write($"resultado = {resultado}");
             }
 
         }
