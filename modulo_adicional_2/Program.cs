@@ -143,6 +143,11 @@ namespace Modulo_adicional_2
 
             if (imp) //imprimimos el resultado en sufijo solo si no hay nada ilegal en la operación dada
             {
+                while (Pila.Count != 0) //Comprobar si aún hay valores en la pila
+                {
+                    Cola.Enqueue(Pila.Pop()); //Sacar los valores que aun hay en la pila y meterlos en la cola
+                }
+
                 Console.Write("SUFIJO: "); //Imprimimos la operación en formato Sufijo
                 while (Cola.Count != 0) //Mientras haya elementos en la cola
                 {
