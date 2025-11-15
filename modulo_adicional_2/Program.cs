@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections;
+using System.Linq.Expressions;
 
 namespace Modulo_adicional_2
 {
@@ -34,79 +35,106 @@ namespace Modulo_adicional_2
                 {
                     operador = c; //cargamos c en la variable operando
 
-                    if (Pila.Count != 0) //comprobamos si la pila tiene algún elemento ya
+                    if (operador == '(')
                     {
-                        switch (operador) //Determinamos la prioridad del operador que se va a introducir a la pila
+                        p1 = true;
+                    }
+                    else if (operador == ')')
+                    {
+                        p2 = true;
+                    }
+                    else
+                    {
+                        if (Pila.Count != 0) //comprobamos si la pila tiene algún elemento ya
                         {
-                            case '+':
-                                prioridad1 = 1;
-                                break;
-                            case '-':
-                                prioridad1 = 1;
-                                break;
-                            case '*':
-                                prioridad1 = 2;
-                                break;
-                            case '/':
-                                prioridad1 = 2;
-                                break;
-                            case '^':
-                                prioridad1 = 3;
-                                break;
-                            case '(':
-                                p1 = true; //Como '(' y ')' no se apilan, les asignamos un booleano para comprbar que se han detectado
-                                break;
-                            case ')':
-                                p2 = true;
-                                break;
-                        }
-
-                        switch (Pila.Peek()) //Comprobamos la prioridad del del último operador introducido
-                        {
-                            case '+':
-                                prioridad2 = 1;
-                                break;
-                            case '-':
-                                prioridad2 = 1;
-                                break;
-                            case '*':
-                                prioridad2 = 2;
-                                break;
-                            case '/':
-                                prioridad2 = 2;
-                                break;
-                            case '^':
-                                prioridad2 = 3;
-                                break;
-                        }
-
-                        if (p1 && p2) //Comprobamos si existe '(' y ')'
-                        {
-                            while (Pila.Count != 0) //Mientras halla operadores en la pila
+                            switch (operador) //Determinamos la prioridad del operador que se va a introducir a la pila
                             {
-                                Cola.Enqueue(Pila.Pop()); //Desapilamos todos los valores que hay en la pila y los pasamos a la cola
+                                case '+':
+                                    prioridad1 = 1;
+                                    break;
+                                case '-':
+                                    prioridad1 = 1;
+                                    break;
+                                case '*':
+                                    prioridad1 = 2;
+                                    break;
+                                case '/':
+                                    prioridad1 = 2;
+                                    break;
+                                case '^':
+                                    prioridad1 = 3;
+                                    break;
                             }
 
-                            p1 = p2 = false; //Reseteamos los valores de p1 y p2
-                        }
-                        else //Si no se ha detectado cualquiera de los dos
-                        {
-                            if (operador != '(' && operador != ')') //Esto es para no introducir '(' o ')'
+                            switch (Pila.Peek()) //Comprobamos la prioridad del del último operador introducido
+                            {
+                                case '+':
+                                    prioridad2 = 1;
+                                    break;
+                                case '-':
+                                    prioridad2 = 1;
+                                    break;
+                                case '*':
+                                    prioridad2 = 2;
+                                    break;
+                                case '/':
+                                    prioridad2 = 2;
+                                    break;
+                                case '^':
+                                    prioridad2 = 3;
+                                    break;
+                            }
+
+                            if (prioridad1 > prioridad2)
                             {
                                 Pila.Push(operador); //Introducimos el operador en la pila
+
                             }
+                            else
+                            {
+                                while (Pila.Count != 0 && prioridad1 <= prioridad2)
+                                {
+                                    Cola.Enqueue(Pila.Pop());
+
+                                    if (Pila.Count != 0)
+                                    {
+                                        switch (Pila.Peek()) //Comprobamos la prioridad del del último operador introducido
+                                        {
+                                            case '+':
+                                                prioridad2 = 1;
+                                                break;
+                                            case '-':
+                                                prioridad2 = 1;
+                                                break;
+                                            case '*':
+                                                prioridad2 = 2;
+                                                break;
+                                            case '/':
+                                                prioridad2 = 2;
+                                                break;
+                                            case '^':
+                                                prioridad2 = 3;
+                                                break;
+                                        }
+                                    }
+                                }
+                                Pila.Push(operador); //Introducimos el operador en la pila
+                            }
+
                         }
-                    }
-                    else if (Pila.Count == 0) //Si la pila no tiene ningún valor, hacemos esto
-                    {
-                        if (operador != '(' && operador != ')') //Esto es para no introducir '(' o ')'
+                        else//Si la pila no tiene ningún valor, hacemos esto
                         {
                             Pila.Push(operador); //Introducimos el operador
                         }
-                        else if (operador == '(') //Si el primer operador es un '('
+                    }
+                    if (p1 && p2) //Comprobamos si existe '(' y ')'
+                    {
+                        while (Pila.Count != 0) //Mientras halla operadores en la pila
                         {
-                            p1 = true;
+                            Cola.Enqueue(Pila.Pop()); //Desapilamos todos los valores que hay en la pila y los pasamos a la cola
                         }
+
+                        p1 = p2 = false; //Reseteamos los valores de p1 y p2
                     }
                 }
                 else if (char.IsLetter(c)) //Comprobamos si el caracter es una letra
@@ -143,9 +171,12 @@ namespace Modulo_adicional_2
 
             if (imp) //imprimimos el resultado en sufijo solo si no hay nada ilegal en la operación dada
             {
-                while (Pila.Count != 0) //Comprobar si aún hay valores en la pila
+                if (Pila.Count != 0)
                 {
-                    Cola.Enqueue(Pila.Pop()); //Sacar los valores que aun hay en la pila y meterlos en la cola
+                    while (Pila.Count != 0) //Comprobar si aún hay valores en la pila
+                    {
+                        Cola.Enqueue(Pila.Pop()); //Sacar los valores que aun hay en la pila y meterlos en la cola
+                    }
                 }
 
                 Console.Write("SUFIJO: "); //Imprimimos la operación en formato Sufijo
