@@ -85,14 +85,14 @@ namespace Modulo_adicional_2
                                     break;
                             }
 
-                            if (prioridad1 > prioridad2)
+                            if (prioridad1 >= prioridad2)
                             {
                                 Pila.Push(operador); //Introducimos el operador en la pila
 
                             }
                             else
                             {
-                                while (Pila.Count != 0 && prioridad1 <= prioridad2)
+                                while (Pila.Count != 0 && prioridad1 < prioridad2)
                                 {
                                     Cola.Enqueue(Pila.Pop());
 
