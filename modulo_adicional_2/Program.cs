@@ -148,15 +148,13 @@ namespace Modulo_adicional_2
                 else if (char.IsDigit(c)) //Comprobamos si el caracter es un número
                 {
                     numero = c - '0'; //Restamos el valor ASCII de lo que haya en c y el valor ASCII de 0. El resultado nos dará el número contenido en c en entero. Lo guardamos en número
-//Mirar con atención si queremos 2 digitos, ahora los permite, pero si no los queremos borrar el encolar del primer if
                     if (i + 1 < operacion.Length && char.IsDigit(operacion[i + 1])) //Si el siguiente caracter al número no es NULL y además es un número
                     {
                         i++; //Pasamos al siguiente caracter
                         numero = numero * 10 + (operacion[i] - '0'); //Movemos el número a la izquierda y le sumamos el nuevo número. El resultado se guarda en numero
-                        Cola.Enqueue(numero.ToString());
                     }
 
-                    else if (numero >= 0 && numero < 10) //Comrpobamos que el número se menor a 10 y mayor que -1
+                    if (numero >= 0 && numero < 10) //Comrpobamos que el número se menor a 10 y mayor que -1
                     {
                         Cola.Enqueue(numero.ToString()); //Si se cumple, se encola el número
                     }
