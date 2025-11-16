@@ -34,17 +34,17 @@ namespace Modulo_adicional_2
             {
                 char c = operacion[i]; //Guardamos el caracter actual en c
 
-                if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '(' || c == ')') //Compros si ele caracter es un operador
+                if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '(' || c == ')') //Comprouebo si el caracter es un operador
                 {
-                    operador = c; //cargamos c en la variable operando
+                    operador = c; //cargamos c en la variable operador
 
                     if (operador == '(')
                     {
-                        p1 = true; //Indicamos que hemos encontrado el inicio del parentesis
+                        p1 = true; //Indicamos que hemos encontrado el inicio del paréntesis
                     }
                     else if (operador == ')')
                     {
-                        p2 = true; //Indicamos que hemos encontrado el final del parentesis
+                        p2 = true; //Indicamos que hemos encontrado el final del paréntesis
                     }
                     else
                     {
@@ -90,14 +90,14 @@ namespace Modulo_adicional_2
 
                             if (prioridad1 >= prioridad2) //Si el orden de prioridad del que entra es mayor o igual al que entro anteriormente
                             {
-                                Pila.Push(operador.ToString()); //Introducimos el operador en la pila
+                                Pila.Push(operador); //Introducimos el operador en la pila
 
                             }
                             else //En caso contrario
                             {
                                 while (Pila.Count != 0 && prioridad1 < prioridad2) //Mientras haya operadores en la pila y la prioridad del elemento que entra es menor al elemento añadido anteriormente
                                 {
-                                    Cola.Enqueue(Pila.Pop().ToString()); //Desapilamos el operador con el que estamos comparado y lo metemos a la cola
+                                    Cola.Enqueue(Pila.Pop()); //Desapilamos el operador con el que estamos comparado y lo metemos a la cola
 
                                     if (Pila.Count != 0) //comprobamos si aún hay elementos en la pila
                                     {
@@ -121,11 +121,11 @@ namespace Modulo_adicional_2
                                         }
                                     }
                                 }
-                                Pila.Push(operador.ToString()); //Introducimos el operador en la pila si no quedan más operadores en la pila
+                                Pila.Push(operador); //Introducimos el operador en la pila si no quedan más operadores en la pila
                             }
 
                         }
-                        else//Si la pila no tiene ningún valor, hacemos esto
+                        else//Si la pila no tiene ningún valor, no hace falta comparar y lo introducimos directamente
                         {
                             Pila.Push(operador.ToString()); //Introducimos el operador
                         }
@@ -137,7 +137,7 @@ namespace Modulo_adicional_2
                             Cola.Enqueue(Pila.Pop().ToString()); //Desapilamos todos los valores que hay en la pila y los pasamos a la cola
                         }
 
-                        p1 = p2 = false; //Reseteamos los valores de p1 y p2
+                        p1 = p2 = false; //Reseteamos los valores de p1 y p2 a false
                     }
                 }
                 else if (char.IsLetter(c)) //Comprobamos si el caracter es una letra
@@ -148,14 +148,15 @@ namespace Modulo_adicional_2
                 else if (char.IsDigit(c)) //Comprobamos si el caracter es un número
                 {
                     numero = c - '0'; //Restamos el valor ASCII de lo que haya en c y el valor ASCII de 0. El resultado nos dará el número contenido en c en entero. Lo guardamos en número
-
+//Mirar con atención si queremos 2 digitos, ahora los permite, pero si no los queremos borrar el encolar del primer if
                     if (i + 1 < operacion.Length && char.IsDigit(operacion[i + 1])) //Si el siguiente caracter al número no es NULL y además es un número
                     {
                         i++; //Pasamos al siguiente caracter
                         numero = numero * 10 + (operacion[i] - '0'); //Movemos el número a la izquierda y le sumamos el nuevo número. El resultado se guarda en numero
+                        Cola.Enqueue(numero.ToString());
                     }
 
-                    if (numero >= 0 && numero < 10) //Comrpobamos que el número se menor a 10 y mayor que -1
+                    else if (numero >= 0 && numero < 10) //Comrpobamos que el número se menor a 10 y mayor que -1
                     {
                         Cola.Enqueue(numero.ToString()); //Si se cumple, se encola el número
                     }
@@ -164,6 +165,10 @@ namespace Modulo_adicional_2
                         Console.WriteLine($"El número {numero} es mayor a 9"); //Indicamos que esta operación es ilegal
                         imp = false; //No se imprime resultado en sufijo
                     }
+                }
+                else if (c == ' ')
+                {
+                    continue;
                 }
                 else //Si no es ninguno de los anteriores, es un caracter ilegal y no se continua con la operación
                 {
