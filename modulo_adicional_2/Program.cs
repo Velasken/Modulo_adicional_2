@@ -15,8 +15,6 @@ namespace Modulo_adicional_2
             int resultado = 0; //Variable para almacenar el resultado
             int prioridad1 = 0; //variable para determinar el orden de prioridad del opererador que se va a introducir a pila
             int prioridad2 = 0; //variable para saber el orden de prioridad del último operador introducuido
-            bool p1 = false; //variable para comprobar si se ha enconrrado (
-            bool p2 = false; //variable para comprobar si se ha encontrado )
             bool imp = true; //variable para comprobar si no hay nada ilegal en la operación introducida
             int Z = 90; //variable que contiene el valor ASCII de Z
             char[] operacion; //Array de caracteres donde se guardara la operación introducida
@@ -40,11 +38,16 @@ namespace Modulo_adicional_2
 
                     if (operador == '(')
                     {
-                        p1 = true; //Indicamos que hemos encontrado el inicio del paréntesis
+                        Pila.Push(operador.ToString());
                     }
                     else if (operador == ')')
                     {
-                        p2 = true; //Indicamos que hemos encontrado el final del paréntesis
+                        while (Pila.Count > 0 && (string)Pila.Peek() != "(")
+                        {
+                            Cola.Enqueue(Pila.Pop());
+                        }
+
+                        Pila.Pop(); // eliminar '('
                     }
                     else
                     {
@@ -71,6 +74,9 @@ namespace Modulo_adicional_2
 
                             switch (Pila.Peek()) //Comprobamos la prioridad del del último operador introducido
                             {
+                                case '(':
+                                    prioridad2 = 0;
+                                    break;
                                 case '+':
                                     prioridad2 = 1;
                                     break;
@@ -90,7 +96,7 @@ namespace Modulo_adicional_2
 
                             if (prioridad1 >= prioridad2) //Si el orden de prioridad del que entra es mayor o igual al que entro anteriormente
                             {
-                                Pila.Push(operador); //Introducimos el operador en la pila
+                                Pila.Push(operador.ToString()); //Introducimos el operador en la pila
 
                             }
                             else //En caso contrario
@@ -103,6 +109,9 @@ namespace Modulo_adicional_2
                                     {
                                         switch (Pila.Peek()) //Comprobamos la prioridad del siguiente operador
                                         {
+                                            case '(':
+                                                prioridad2 = 0;
+                                                break;
                                             case '+':
                                                 prioridad2 = 1;
                                                 break;
@@ -121,7 +130,7 @@ namespace Modulo_adicional_2
                                         }
                                     }
                                 }
-                                Pila.Push(operador); //Introducimos el operador en la pila si no quedan más operadores en la pila
+                                Pila.Push(operador.ToString()); //Introducimos el operador en la pila si no quedan más operadores en la pila
                             }
 
                         }
@@ -129,15 +138,6 @@ namespace Modulo_adicional_2
                         {
                             Pila.Push(operador.ToString()); //Introducimos el operador
                         }
-                    }
-                    if (p1 && p2) //Comprobamos si existe '(' y ')'
-                    {
-                        while (Pila.Count != 0) //Mientras halla operadores en la pila
-                        {
-                            Cola.Enqueue(Pila.Pop().ToString()); //Desapilamos todos los valores que hay en la pila y los pasamos a la cola
-                        }
-
-                        p1 = p2 = false; //Reseteamos los valores de p1 y p2 a false
                     }
                 }
                 else if (char.IsLetter(c)) //Comprobamos si el caracter es una letra
@@ -186,8 +186,8 @@ namespace Modulo_adicional_2
                 }
 
                 object[] col = Cola.ToArray(); //Convertimos la Cola principal en un array
-                
-                for(int i = 0; i < col.Length; i++)
+
+                for (int i = 0; i < col.Length; i++)
                 {
                     ColaAux.Enqueue(col[i]); //Para evitar perder datos en proceso del cálculo, pasamos los valores de la cola principal a la cola auxiliar
                 }
@@ -212,34 +212,46 @@ namespace Modulo_adicional_2
                         int a = (int)Pila.Pop();
                         switch (c) //Comprobamos que operador es c para que lleve acabo una operación concreta
                         {
-                            case "+": 
-                                Pila.Push(a + b); 
+                            case "+":
+                                Pila.Push(a + b);
                                 break;
-                            case "-": 
-                                Pila.Push(a - b); 
+                            case "-":
+                                Pila.Push(a - b);
                                 break;
-                            case "*": 
-                                Pila.Push(a * b); 
+                            case "*":
+                                Pila.Push(a * b);
                                 break;
-                            case "/": 
-                                Pila.Push(a / b); 
-                                break;      
-                            case "^": 
-                                Pila.Push((int)Math.Pow(a, b)); 
+                            case "/":
+                                if (b > 0)
+                                {
+                                    Pila.Push(a / b);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("División entre 0, no es posible continuar");
+                                    imp = false;
+                                    break;
+                                }
+                                break;
+                            case "^":
+                                Pila.Push((int)Math.Pow(a, b));
                                 break;
                         }
                     }
                 }
 
-                resultado = (int)Pila.Pop(); // Guardar el resultado en la variable resultado
-
-                Console.Write("SUFIJO: "); //Imprimimos la operación en formato Sufijo
-                while (ColaAux.Count != 0) //Mientras haya elementos en la cola auxiliar
+                if (imp)
                 {
-                    Console.Write($"{ColaAux.Dequeue()} "); //Imprimimos los valores
+                    resultado = (int)Pila.Pop(); // Guardar el resultado en la variable resultado
+
+                    Console.Write("SUFIJO: "); //Imprimimos la operación en formato Sufijo
+                    while (ColaAux.Count != 0) //Mientras haya elementos en la cola auxiliar
+                    {
+                        Console.Write($"{ColaAux.Dequeue()} "); //Imprimimos los valores
+                    }
+                    Console.Write("\n");
+                    Console.Write($"Resultado = {resultado}"); //Imprimimos el resultado
                 }
-                Console.Write("\n");
-                Console.Write($"Resultado = {resultado}"); //Imprimimos el resultado
             }
 
         }
