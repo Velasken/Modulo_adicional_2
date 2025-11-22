@@ -240,7 +240,6 @@ namespace Modulo_adicional_2
 
                 if (imp)
                 {
-                    Console.WriteLine("Imp true");
                     resultado = (int)Pila.Pop(); // Guardar el resultado en la variable resultado
 
                     Console.Write("POSTFIJO: "); //Imprimimos la operación en formato Sufijo
