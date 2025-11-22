@@ -94,30 +94,31 @@ namespace Modulo_adicional_2
                                     break;
                             }
 
-                            while (Pila.Count != 0 && Pila.Peek().ToString() != "(")
+                            while (Pila.Count != 0 && Pila.Peek().ToString() != "(") //Siempre que la pila tenga algún elemento y que ese elemento sea distinto de '(' ya que siempre podré meter a la pila cualquier operador mientras la pila esté vacía o el elemento en la cima sea '('
                             {
-                                switch ((string)Pila.Peek())
+                                switch ((string)Pila.Peek()) //Busco por el operador que hay actualmente en la pila
                                 {
-                                    case "+":
+                                    case "+": //Si es + o -, prioridad 1
                                     case "-":
                                         prioridad2 = 1; break;
-                                    case "*":
+                                    case "*": //Si es * o /, prioridad 2
                                     case "/":
                                         prioridad2 = 2; break;
-                                    case "^":
+                                    case "^": //Si es ^ prioridad 3
                                         prioridad2 = 3; break;
                                 }
 
-                                if ((operador != '^' && prioridad2 >= prioridad1) || (operador == '^' && prioridad2 > prioridad1))
+                                
+                                if (prioridad2 >= prioridad1) //Si la prioridad del segundo es mayor o igual que el que intento meter, meto el operador en la cima a la cola
                                 {
                                     Cola.Enqueue(Pila.Pop());
                                 }
-                                else
+                                else //Si el operador que intento apilar tiene mayor prioridad simplemente lo apilo
                                 {
                                     break;
                                 }
                             }
-                            Pila.Push(operador.ToString());
+                            Pila.Push(operador.ToString()); //Apilo el operador
 
                         }
                         else//Si la pila no tiene ningún valor, no hace falta comparar y lo introducimos directamente
