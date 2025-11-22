@@ -94,42 +94,30 @@ namespace Modulo_adicional_2
                                     break;
                             }
 
-                            if (prioridad1 >= prioridad2) //Si el orden de prioridad del que entra es mayor o igual al que entro anteriormente
+                            while (Pila.Count != 0 && Pila.Peek().ToString() != "(")
                             {
-                                Pila.Push(operador.ToString()); //Introducimos el operador en la pila
-                            }
-                            else //En caso contrario
-                            {
-                                while (Pila.Count != 0 && prioridad1 < prioridad2) //Mientras haya operadores en la pila y la prioridad del elemento que entra es menor al elemento añadido anteriormente
+                                switch ((string)Pila.Peek())
                                 {
-                                    Cola.Enqueue(Pila.Pop()); //Desapilamos el operador con el que estamos comparado y lo metemos a la cola
-                                    if (Pila.Count != 0) //comprobamos si aún hay elementos en la pila
-                                    {
-                                        switch (Pila.Peek()) //Comprobamos la prioridad del siguiente operador
-                                        {
-                                            case '(':
-                                                prioridad2 = 0;
-                                                break;
-                                            case '+':
-                                                prioridad2 = 1;
-                                                break;
-                                            case '-':
-                                                prioridad2 = 1;
-                                                break;
-                                            case '*':
-                                                prioridad2 = 2;
-                                                break;
-                                            case '/':
-                                                prioridad2 = 2;
-                                                break;
-                                            case '^':
-                                                prioridad2 = 3;
-                                                break;
-                                        }
-                                    }
+                                    case "+":
+                                    case "-":
+                                        prioridad2 = 1; break;
+                                    case "*":
+                                    case "/":
+                                        prioridad2 = 2; break;
+                                    case "^":
+                                        prioridad2 = 3; break;
                                 }
-                                Pila.Push(operador.ToString()); //Introducimos el operador en la pila si no quedan más operadores en la pila
+
+                                if ((operador != '^' && prioridad2 >= prioridad1) || (operador == '^' && prioridad2 > prioridad1))
+                                {
+                                    Cola.Enqueue(Pila.Pop());
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
+                            Pila.Push(operador.ToString());
 
                         }
                         else//Si la pila no tiene ningún valor, no hace falta comparar y lo introducimos directamente
